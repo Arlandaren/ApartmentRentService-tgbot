@@ -30,7 +30,9 @@ class Admin_catalogue_list_paginator:
             nav_row.append(InlineKeyboardButton(text="⏭️", callback_data=f"apartment_page_{self.page+1}"))
         
         manage_row.append(InlineKeyboardButton(text="поиск", callback_data=f"search_apartment_by_name"))
-        manage_row.append(InlineKeyboardButton(text="назад", callback_data=f"back"))
+        manage_row.append(InlineKeyboardButton(text="назад", callback_data=f"admin_back_to_main_menu"))
+        manage_row.append(InlineKeyboardButton(text="Добавить", callback_data="admin_add_apartment"))
+
         kb.append(nav_row)
         kb.append(manage_row)
         return InlineKeyboardMarkup(inline_keyboard=kb)

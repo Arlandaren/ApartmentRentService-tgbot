@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5433:5432"
+    restart: always
+    environment:
+      - POSTGRES_DB=apartmentrent-tgbot
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerty
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      BOT_TOKEN: "6315582535:AAFIZmC-ZtOi73_8h7VDWeJ6G_jXlLiJfos"
+      ADMINS: "infoowner,butidma"
+      DB_CONN: "postgres://postgres:qwerty@postgres:5432/apartmentrent-tgbot"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    restart: always
+
+volumes:
+  pg_data:
